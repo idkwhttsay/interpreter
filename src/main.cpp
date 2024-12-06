@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     const std::string command = argv[1];
 
     if (command == "tokenize") {
+        int exit_code = 0;
         std::string file_contents = read_file_contents(argv[2]);
 
         if (!file_contents.empty()) {
@@ -35,11 +36,13 @@ int main(int argc, char *argv[]) {
                     case '-': std::cout << "MINUS - null" << std::endl; break;
                     case ';': std::cout << "SEMICOLON ; null" << std::endl; break;
                     case '/': std::cout << "SLASH / null" << std::endl; break;
+                    default: std::cerr << "[line 1] Error: Unexpected character: " << c << std::endl; exit_code = 65;
                 }
             }
         }
-        std::cout << "EOF  null" << std::endl; // Placeholder, remove this line when implementing the scanner
 
+        std::cout << "EOF  null" << std::endl; // Placeholder, remove this line when implementing the scanner
+        return exit_code;
     } else {
         std::cerr << "Unknown command: " << command << std::endl;
         return 1;
