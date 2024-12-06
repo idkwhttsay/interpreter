@@ -23,8 +23,28 @@ int main(int argc, char *argv[]) {
         std::string file_contents = read_file_contents(argv[2]);
 
         if (!file_contents.empty()) {
-            for (auto c: file_contents) {
-                switch (c) {
+            for (int i = 0; i < file_contents.length(); i++) {
+                if (i < file_contents.length() - 1 && file_contents[i] == '=' && file_contents[i + 1] == '=') {
+                    std::cout << "EQUAL_EQUAL == null" << std::endl;
+                    i ++;
+                    continue;
+                } else if(i < file_contents.length() - 1 && file_contents[i] == '!' && file_contents[i + 1] == '=') {
+                    std::cout << "BANG_EQUAL != null" << std::endl;
+                    i ++;
+                    continue;
+                } else if(i < file_contents.length() - 1 && file_contents[i] == '<' && file_contents[i + 1] == '=') {
+                    std::cout << "LESS_EQUAL <= null" << std::endl;
+                    i ++;
+                    continue;
+                } else if(i < file_contents.length() - 1 && file_contents[i] == '>' && file_contents[i + 1] == '=') {
+                    std::cout << "GREATER_EQUAL >= null" << std::endl;
+                    i ++;
+                    continue;
+                } else if(i < file_contents.length() - 1 && file_contents[i] == '/' && file_contents[i + 1] == '/') {
+                    break;
+                }
+
+                switch (file_contents[i]) {
                     case '(': std::cout << "LEFT_PAREN ( null" << std::endl; break;
                     case ')': std::cout << "RIGHT_PAREN ) null" << std::endl; break;
                     case '{': std::cout << "LEFT_BRACE { null" << std::endl; break;
@@ -36,7 +56,11 @@ int main(int argc, char *argv[]) {
                     case '-': std::cout << "MINUS - null" << std::endl; break;
                     case ';': std::cout << "SEMICOLON ; null" << std::endl; break;
                     case '/': std::cout << "SLASH / null" << std::endl; break;
-                    default: std::cerr << "[line 1] Error: Unexpected character: " << c << std::endl; exit_code = 65;
+                    case '=': std::cout << "EQUAL = null" << std::endl; break;
+                    case '!': std::cout << "BANG ! null" << std::endl; break;
+                    case '<': std::cout << "LESS < null" << std::endl; break;
+                    case '>': std::cout << "GREATER > null" << std::endl; break;
+                    default: std::cerr << "[line 1] Error: Unexpected character: " << file_contents[i] << std::endl; exit_code = 65;
                 }
             }
         }
