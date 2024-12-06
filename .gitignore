@@ -54,4 +54,5 @@ dkms.conf
 
 build
 build/
+.idea/
 vcpkg_installed

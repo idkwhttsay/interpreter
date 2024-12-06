@@ -45,6 +45,10 @@ int main(int argc, char *argv[]) {
                 }
 
                 switch (file_contents[i]) {
+                    case ' ':
+                    case '\r':
+                    case '\t': break;
+                    case '\n': break;
                     case '(': std::cout << "LEFT_PAREN ( null" << std::endl; break;
                     case ')': std::cout << "RIGHT_PAREN ) null" << std::endl; break;
                     case '{': std::cout << "LEFT_BRACE { null" << std::endl; break;
