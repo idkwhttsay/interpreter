@@ -24,9 +24,9 @@ int main(int argc, char *argv[]) {
         if (!file_contents.empty()) {
             for(char symbol: file_contents) {
                 if(symbol == '(') {
-                    std::cout << 'LEFT_PAREN ( null' << std::endl;
+                    std::cout << "LEFT_PAREN ( null" << std::endl;
                 } else if(symbol == ')') {
-                    std::cout << 'RIGHT_PAREN ) null' << std::endl;
+                    std::cout << "RIGHT_PAREN ) null" << std::endl;
                 }
             }
         }
