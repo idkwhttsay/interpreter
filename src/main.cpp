@@ -28,6 +28,13 @@ int main(int argc, char *argv[]) {
                     case ')': std::cout << "RIGHT_PAREN ) null" << std::endl; break;
                     case '{': std::cout << "LEFT_BRACE { null" << std::endl; break;
                     case '}': std::cout << "RIGHT_BRACE } null" << std::endl; break;
+                    case '*': std::cout << "STAR * null" << std::endl; break;
+                    case ',': std::cout << "COMMA , null" << std::endl; break;
+                    case '+': std::cout << "PLUS + null" << std::endl; break;
+                    case '.': std::cout << "DOT . null" << std::endl; break;
+                    case '-': std::cout << "MINUS - null" << std::endl; break;
+                    case ';': std::cout << "SEMICOLON ; null" << std::endl; break;
+                    case '/': std::cout << "SLASH / null" << std::endl; break;
                 }
             }
         }
