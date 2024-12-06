@@ -22,11 +22,12 @@ int main(int argc, char *argv[]) {
         std::string file_contents = read_file_contents(argv[2]);
 
         if (!file_contents.empty()) {
-            for(char symbol: file_contents) {
-                if(symbol == '(') {
-                    std::cout << "LEFT_PAREN ( null" << std::endl;
-                } else if(symbol == ')') {
-                    std::cout << "RIGHT_PAREN ) null" << std::endl;
+            for (auto c: file_contents) {
+                switch (c) {
+                    case '(': std::cout << "LEFT_PAREN ( null" << std::endl; break;
+                    case ')': std::cout << "RIGHT_PAREN ) null" << std::endl; break;
+                    case '{': std::cout << "LEFT_BRACE { null" << std::endl; break;
+                    case '}': std::cout << "RIGHT_BRACE } null" << std::endl; break;
                 }
             }
         }
