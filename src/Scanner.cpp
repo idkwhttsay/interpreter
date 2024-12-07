@@ -1,5 +1,7 @@
 #include "Scanner.hpp"
 
+#include <utility>
+
 void Scanner::initKeywords() {
     if (keywords.empty()) {
         keywords["and"] = "AND";
@@ -21,8 +23,8 @@ void Scanner::initKeywords() {
     }
 }
 
-Scanner::Scanner(const std::string& str)
-    : source(str), current(0), line(1), exit_code(0) {
+Scanner::Scanner(std::string  str, const bool to_print)
+    : source(std::move(str)), current(0), line(1), exit_code(0), tokens(), to_print(to_print) {
         initKeywords();
     }
 
@@ -35,7 +37,7 @@ int Scanner::tokenize() {
         add_token(source[this->current]);
     }
 
-    std::cout << "EOF  null" << std::endl;
+    print_token("EOF", "", "null");
     return this->exit_code;
 }
 
@@ -60,19 +62,23 @@ void Scanner::skip_comment() {
     advance();
 }
 
-bool Scanner::peek(char c) {
+bool Scanner::peek(char c) const {
     return (this->current+1 < source.size() && source[this->current+1] == c);
 }
 
-bool Scanner::is_at_end() {
+bool Scanner::is_at_end() const {
     return !(current < source.size());
 }
 
-void Scanner::print_token(std::string type, std::string name, std::string literal) {
-    std::cout << type << ' ' << name << ' ' << literal << std::endl;
+void Scanner::print_token(const std::string& type, const std::string &name, const std::string& literal) {
+    if(!to_print){
+        tokens.push_back(Token(type, name, literal));
+    } else {
+        std::cout << type << ' ' << name << ' ' << literal << std::endl;
+    }
 }
 
-char Scanner::peek_next() {
+char Scanner::peek_next() const {
     if (current + 1 >= source.size()) return '\0';
     return source[current + 1];
 }
@@ -114,7 +120,7 @@ void Scanner::number() {
 
 void Scanner::string() {
     advance();
-    std::string value = "";
+    std::string value;
     while(!is_at_end() && source[current] != '"') {
         if(source[current] == '\n') line ++;
         value.push_back(source[current]);
@@ -131,14 +137,18 @@ void Scanner::string() {
     print_token("STRING", "\"" + value + "\"", value);
 }
 
+std::vector<Token> Scanner::get_tokens() {
+    return tokens;
+}
+
 void Scanner::identifier() {
-    std::string value = "";
+    std::string value;
     while(!is_at_end() && is_alpha_numeric(source[current])) {
         value.push_back(source[current]);
         advance();
     }
 
-    if(keywords.find(value) != keywords.end()) {
+    if(keywords.contains(value)) {
         print_token(keywords[value], value, "null");
         return;
     }
@@ -204,4 +214,4 @@ void Scanner::add_token(char c) {
     }
 }
 
-Scanner::~Scanner() {}
+Scanner::~Scanner() = default;

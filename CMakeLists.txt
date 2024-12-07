@@ -8,4 +8,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.hpp)
 
 add_executable(interpreter ${SOURCE_FILES}
         src/Scanner.cpp
-        src/Scanner.hpp)
+        src/Scanner.hpp
+        src/Token.hpp
+        src/Parser.hpp
+        src/Parser.cpp)

@@ -49,6 +49,12 @@ cmake_ninja_workdir = /Users/tatar4onok/CLionProjects/interpreter/cmake-build-de
 
 build cmake_object_order_depends_target_interpreter: phony || .
 
+build CMakeFiles/interpreter.dir/src/Parser.cpp.o: CXX_COMPILER__interpreter_unscanned_Debug /Users/tatar4onok/CLionProjects/interpreter/src/Parser.cpp || cmake_object_order_depends_target_interpreter
+  DEP_FILE = CMakeFiles/interpreter.dir/src/Parser.cpp.o.d
+  FLAGS = -g -std=gnu++23 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/interpreter.dir
+  OBJECT_FILE_DIR = CMakeFiles/interpreter.dir/src
+
 build CMakeFiles/interpreter.dir/src/Scanner.cpp.o: CXX_COMPILER__interpreter_unscanned_Debug /Users/tatar4onok/CLionProjects/interpreter/src/Scanner.cpp || cmake_object_order_depends_target_interpreter
   DEP_FILE = CMakeFiles/interpreter.dir/src/Scanner.cpp.o.d
   FLAGS = -g -std=gnu++23 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -fdiagnostics-color=always
@@ -69,7 +75,7 @@ build CMakeFiles/interpreter.dir/src/main.cpp.o: CXX_COMPILER__interpreter_unsca
 #############################################
 # Link the executable interpreter
 
-build interpreter: CXX_EXECUTABLE_LINKER__interpreter_Debug CMakeFiles/interpreter.dir/src/Scanner.cpp.o CMakeFiles/interpreter.dir/src/main.cpp.o
+build interpreter: CXX_EXECUTABLE_LINKER__interpreter_Debug CMakeFiles/interpreter.dir/src/Parser.cpp.o CMakeFiles/interpreter.dir/src/Scanner.cpp.o CMakeFiles/interpreter.dir/src/main.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk
   OBJECT_DIR = CMakeFiles/interpreter.dir
   POST_BUILD = :

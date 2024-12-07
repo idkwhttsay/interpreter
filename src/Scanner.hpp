@@ -5,25 +5,31 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <vector>
+#include "Token.hpp"
 
 class Scanner {
 private:
     std::string source;
+    std::vector<Token> tokens;
     std::map<std::string, std::string> keywords;
     void initKeywords();
     int current;
     int line;
     int exit_code;
+    bool to_print;
 public:
-    Scanner(const std::string& str);
+    Scanner(std::string  str, bool to_print);
     ~Scanner();
 
     int tokenize();
     void add_token(char c);
 
-    bool peek(char c);
-    char peek_next();
-    bool is_at_end();
+    std::vector<Token> get_tokens();
+
+    bool peek(char c) const;
+    char peek_next() const;
+    bool is_at_end() const;
     void advance();
     void skip_comment();
 
@@ -35,7 +41,7 @@ public:
     void number();
     void identifier();
 
-    static void print_token(std::string type, std::string name, std::string literal);
+    void print_token(const std::string& type, const std::string &name, const std::string& literal);
 };
 
 #endif // SCANNER_H
