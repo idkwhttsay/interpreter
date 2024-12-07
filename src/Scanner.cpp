@@ -1,7 +1,30 @@
 #include "Scanner.hpp"
 
+void Scanner::initKeywords() {
+    if (keywords.empty()) {
+        keywords["and"] = "AND";
+        keywords["class"] = "CLASS";
+        keywords["else"] = "ELSE";
+        keywords["false"] = "FALSE";
+        keywords["for"] = "FOR";
+        keywords["fun"] = "FUN";
+        keywords["if"] = "IF";
+        keywords["nil"] = "NIL";
+        keywords["or"] = "OR";
+        keywords["print"] = "PRINT";
+        keywords["return"] = "RETURN";
+        keywords["super"] = "SUPER";
+        keywords["this"] = "THIS";
+        keywords["true"] = "TRUE";
+        keywords["var"] = "VAR";
+        keywords["while"] = "WHILE";
+    }
+}
+
 Scanner::Scanner(const std::string& str)
-    : source(str), current(0), line(1), exit_code(0) {}
+    : source(str), current(0), line(1), exit_code(0) {
+        initKeywords();
+    }
 
 void Scanner::advance() {
     current ++;
@@ -14,6 +37,18 @@ int Scanner::tokenize() {
 
     std::cout << "EOF  null" << std::endl;
     return this->exit_code;
+}
+
+bool Scanner::is_alpha(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+bool Scanner::is_digit(char c) {
+    return (c >= '0' && c <= '9');
+}
+
+bool Scanner::is_alpha_numeric(char c) {
+    return is_alpha(c) || is_digit(c);
 }
 
 void Scanner::skip_comment() {
@@ -31,25 +66,6 @@ bool Scanner::peek(char c) {
 
 bool Scanner::is_at_end() {
     return !(current < source.size());
-}
-
-void Scanner::string() {
-    advance();
-    std::string value = "";
-    while(!is_at_end() && source[current] != '"') {
-        if(source[current] == '\n') line ++;
-        value.push_back(source[current]);
-        advance();
-    }
-
-    if(is_at_end()) {
-        std::cerr << "[line " << line << "] Error: Unterminated string." << std::endl;
-        this->exit_code = 65;
-        return;
-    }
-
-    advance();
-    print_token("STRING", "\"" + value + "\"", value);
 }
 
 void Scanner::print_token(std::string type, std::string name, std::string literal) {
@@ -94,6 +110,40 @@ void Scanner::number() {
         dvalue.push_back('0');
         print_token("NUMBER", value, dvalue);
     }
+}
+
+void Scanner::string() {
+    advance();
+    std::string value = "";
+    while(!is_at_end() && source[current] != '"') {
+        if(source[current] == '\n') line ++;
+        value.push_back(source[current]);
+        advance();
+    }
+
+    if(is_at_end()) {
+        std::cerr << "[line " << line << "] Error: Unterminated string." << std::endl;
+        this->exit_code = 65;
+        return;
+    }
+
+    advance();
+    print_token("STRING", "\"" + value + "\"", value);
+}
+
+void Scanner::identifier() {
+    std::string value = "";
+    while(!is_at_end() && is_alpha_numeric(source[current])) {
+        value.push_back(source[current]);
+        advance();
+    }
+
+    if(keywords.find(value) != keywords.end()) {
+        print_token(keywords[value], value, "null");
+        return;
+    }
+
+    print_token("IDENTIFIER", value, "null");
 }
 
 void Scanner::add_token(char c) {
@@ -144,8 +194,10 @@ void Scanner::add_token(char c) {
                 print_token("GREATER", ">", "null"); advance();
             } break;
         default:
-            if(isdigit(c)) {
+            if(is_digit(c)) {
                 number();
+            } else if(is_alpha(c)) {
+                identifier();
             } else {
                 std::cerr << "[line " << line << "] Error: Unexpected character: " << c << std::endl; advance(); exit_code = 65;
             }
